@@ -6,18 +6,12 @@ import booksRouter from './routes/books.js';
 import cartRouter from './routes/cart.js';
 import ordersRouter from './routes/orders.js';
 
-
+const app = express();
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 3000;
-console.log(PORT);
+app.use(express.json()); 
 
-app.use(express.json());  //우선 사용 안함.
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.listen(process.env.PORT);
 
 
 app.get('/', (req, res) =>{
