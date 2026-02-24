@@ -8,7 +8,11 @@ export const allBooks = async (req, res) =>{
 
         let offset = limitPage *(currentPage-1);
 
-        let sql ="SELECT * FROM books b LEFT JOIN category c ON b.category_id=c.id WHERE 1=1 ";
+        let sql =`SELECT *, 
+        (SELECT count(*) FROM likes WHERE b.id=book_id) AS likes 
+        FROM books b 
+        LEFT JOIN category c ON b.category_id=c.id 
+        WHERE 1=1 `;
         let values = [];
         if(categoryId){
             sql += " AND category_id = ? ";
@@ -42,7 +46,12 @@ export const detailBook = async(req, res) =>{
     
     try{
         const {bookId} = req.params;
-        const sql = "SELECT * FROM books LEFT JOIN category ON books.category_id = category.id WHERE books.id = ? ";
+        let sql = `SELECT b.*, c.category_name, 
+        (SELECT count(*) FROM likes WHERE b.id=book_id) AS likes,
+        EXISTS (SELECT 1 FROM likes WHERE b.id=book_id) AS liked   
+        FROM books b 
+        LEFT JOIN category c ON b.category_id = c.id 
+        WHERE b.id = ? `;
         const values = [bookId];
         const [results] = await conn.query(sql, values);
         const book = results[0];
