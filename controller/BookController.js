@@ -15,15 +15,15 @@ export const allBooks = async (req, res) =>{
         WHERE 1=1 `;
         let values = [];
         if(categoryId){
-            sql += " AND category_id = ? ";
+            sql += ` AND category_id = ? `;
             values.push(categoryId);
         }
         if(newBook){
-            sql += " AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW() ";
+            sql += ` AND pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW() `;
         }
 
         if(limitPage && currentPage){
-            sql +=" LIMIT ? OFFSET  ?" ;
+            sql +=` LIMIT ? OFFSET  ?` ;
             values.push(Number(limitPage));
             values.push(offset);
         }

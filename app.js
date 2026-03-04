@@ -5,6 +5,8 @@ import authRouter from './routes/auth.js';
 import booksRouter from './routes/books.js';
 import cartRouter from './routes/cart.js';
 import ordersRouter from './routes/orders.js';
+import categoryRouter from './routes/categories.js';
+import likeRouter from './routes/likes.js';
 
 const app = express();
 dotenv.config();
@@ -18,8 +20,10 @@ app.get('/', (req, res) =>{
     res.send('Hello World');
 })
 
-app.use('/users',usersRouter);
-app.use('/auth',authRouter);
-app.use('/books',booksRouter);
-app.use('/cart',cartRouter);
-app.use('/orders',ordersRouter);
+app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+app.use('/books', booksRouter);
+app.use('/cart', cartRouter);
+app.use('/orders', ordersRouter);
+app.use('/categories', categoryRouter);
+app.use('/likes', likeRouter);

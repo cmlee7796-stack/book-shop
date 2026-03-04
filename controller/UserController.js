@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import crypto from 'crypto';
 import conn from '../mariadb.js';
 
-const join = async (req, res)=>{
+export const join = async (req, res)=>{
     const {email, password} = req.body;
 
     try{
@@ -30,7 +30,7 @@ const join = async (req, res)=>{
     }
 }
 
-const passwordResetRequest = async (req, res)=>{
+export const passwordResetRequest = async (req, res)=>{
     const {email} = req.body;
 
     try{
@@ -57,7 +57,7 @@ const passwordResetRequest = async (req, res)=>{
     }
 }
 
-const passwordReset = async (req, res)=>{
+export const passwordReset = async (req, res)=>{
     const {email, password} = req.body;
 
     try{
@@ -79,5 +79,4 @@ const passwordReset = async (req, res)=>{
     }
 }
 
-export default {join, passwordResetRequest, passwordReset};
 

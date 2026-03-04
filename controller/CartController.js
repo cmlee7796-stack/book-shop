@@ -5,7 +5,7 @@ export const addToCart = async (req, res) => {
     const {bookId, quantity , userId} = req.body;
     
     try{
-        const sql = "INSERT  INTO cartItems (book_id, quantity, user_id) VALUES ( ?, ? , ? )";
+        const sql = "INSERT  INTO cart_items (book_id, quantity, user_id) VALUES ( ?, ? , ? )";
         const values = [Number(bookId), quantity, Number(userId)];
         const [results] = await conn.query(sql, values);
         return res.status(StatusCodes.OK).json(results);
@@ -30,7 +30,7 @@ export const getCartItems = async (req, res) =>{
     
     try{
         let sql = `SELECT ci.id, book_id, title, summary, quantity, price 
-                    FROM cartItems ci LEFT JOIN books  b
+                    FROM cart_items ci LEFT JOIN books  b
                     ON ci.book_id = b.id
                     WHERE ci.user_id = ? AND ci.id IN (?)`;
 
@@ -49,7 +49,7 @@ export const removeCartItem = async(req, res) => {
     const {id} = req.body;
 
     try{
-        let sql = 'DELETE FROM cartItems WHERE id = ? ';
+        let sql = 'DELETE FROM cart_items WHERE id = ? ';
         let values = [id];
         const results = await conn.query(sql, values);
         return res.status(StatusCodes.OK).json(results);

@@ -1,6 +1,7 @@
 import express from 'express';
 import {body, validationResult} from 'express-validator';
-import userController from '../controller/UserController.js';
+import { StatusCodes } from 'http-status-codes';
+import {join, passwordResetRequest, passwordReset} from '../controller/UserController.js';
 
 const router = express.Router();
 
@@ -9,17 +10,17 @@ const validate = (req, res,next) => {
     if(err.isEmpty()){
         return next();
     }else{
-        return res.status(400).json(err.array());
+        return res.status(StatusCodes.BAD_REQUEST).json(err.array());
     }
 }
 
 const validatePassword = (req, res, next) =>{
     const {password} = req.body;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
-    if(!passwordRegex.test(password)){
-        return res.status(400).json({message: '비밀번호는 최소 8자, 하나 이상의 문자, 숫자, 특수문자를 포함해야 합니다.'});
-    }else{
+    if(passwordRegex.test(password)){
         return next();
+    }else{
+        return res.status(StatusCodes.BAD_REQUEST).json({message: '비밀번호는 최소 8자, 하나 이상의 문자, 숫자, 특수문자를 포함해야 합니다.'});
     }
 }
 router
@@ -34,7 +35,7 @@ router
         validate,
         validatePassword
     ]
-    , userController.join);
+    , join);
 
 router
 .route('/me/password')
@@ -45,7 +46,7 @@ router
         .isEmail().withMessage('이메일 형식이 아닙니다'),
         validate
     ]
-    ,userController.passwordResetRequest
+    ,passwordResetRequest
 )
 .put(
     [    
@@ -57,7 +58,7 @@ router
         validate,
         validatePassword
     ]
-    , userController.passwordReset);
+    , passwordReset);
 
 
 export default router;

@@ -16,7 +16,7 @@ export const order = async (req, res) => {
         sql =`SELECT * FROM cart_items WHERE id IN (?)`;
         let [cartItems] = await conn.query(sql, [items]);
 
-        sql =`INSERT INTO orderedBook (order_id, book_id, quantity) VALUES ?`;
+        sql =`INSERT INTO order_items (order_id, book_id, quantity) VALUES ?`;
 
         values = [];  //초기화
         cartItems.forEach((item) =>
@@ -61,7 +61,7 @@ export const orderDetail = async (req, res) => {
     const {orderId} = req.params;
     try{
             let sql = `SELECT book_id, title, author, quantity, price
-            FROM orderedBook ob
+            FROM order_items ob
             LEFT JOIN books b ON ob.book_id = b.id
             LEFT JOIN orders o ON ob.order_id = o.id
             WHERE o.user_id = ? AND o.id = ?`;
